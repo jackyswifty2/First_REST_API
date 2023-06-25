@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const todoappSchema = mongoose.Schema(
+const todoSchema = mongoose.Schema(
   {
     userName: {
       type: String,
@@ -24,6 +24,6 @@ const todoappSchema = mongoose.Schema(
   }
 );
 
-const todoapp = mongoose.model("todoapp", todoappSchema);
+const Todo = mongoose.model("todoModel", todoSchema);
 
-module.exports = todoapp;
+module.exports = Todo;

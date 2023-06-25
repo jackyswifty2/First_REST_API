@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const todoapp = require("../model/todoModel");
+const Todo = require("../model/todoModel");
 
 // Get all todos
 router.get("/", async (req, res) => {
   try {
-    const todos = await todoapp.find();
+    const todos = await Todo.find();
     if (todos.length === 0) {
-      return res.status(404).json({ message: "No todos found." });
+      return res.status(200).json({ message: "No todos found." });
     }
     return res.status(200).json(todos);
   } catch (error) {
@@ -19,9 +19,9 @@ router.get("/", async (req, res) => {
 // Get a single todo by ID
 router.get("/:id", async (req, res) => {
   try {
-    const todo = await todoapp.findById(req.params.id);
+    const todo = await Todo.findById(req.params.id);
     if (!todo) {
-      return res.status(404).json({ message: "Todo not found" });
+      return res.status(404).json({ message: "todo not found" });
     }
     return res.status(200).json(todo);
   } catch (error) {
@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
         .json({ message: "userName and task are required fields" });
     }
 
-    const todo = new todoapp(req.body);
+    const todo = new Todo(req.body);
     await todo.save();
 
     return res.status(201).json(todo);
@@ -63,7 +63,7 @@ router.patch("/:id", async (req, res) => {
         .status(400)
         .json({ message: "userName or task must be provided for update" });
     }
-    const todo = await todoapp.findByIdAndUpdate(
+    const todo = await Todo.findByIdAndUpdate(
       req.params.id,
       { userName, task },
       {
@@ -82,7 +82,7 @@ router.patch("/:id", async (req, res) => {
 // Delete a todo by ID
 router.delete("/:id", async (req, res) => {
   try {
-    const todo = await todoapp.findByIdAndDelete(req.params.id);
+    const todo = await Todo.findByIdAndDelete(req.params.id);
     if (!todo) {
       return res.status(404).json({ message: "Todo not found" });
     }
